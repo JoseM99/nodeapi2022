@@ -1,19 +1,21 @@
 const express = require('express');
 const morgan = require('morgan');
-const app = express(); 
- 
+const app = express();
 
-app.set('port', process.env.PORT || 4000);
+// settings
+app.set('port', process.env.PORT || 3000);
 
 
+// middlewares
 app.use(morgan('dev'));
 app.use(express.urlencoded({extended: false}));
 app.use(express.json());
 
+// routes
+app.use(require('./routes'));
+app.use('/', require('./routes/movies')); 
 
-app.use(require('./routes/users'));
-app.use('/', require('./routes/users')); 
-
-app.listen(4000,() => {
-    console.log(`Iniciando el Servidor en el puerto.. ${4000}`);
+// starting the server
+app.listen(app.get('port'), () => {
+    console.log(`Server on port ${app.get('port')}`);
 });
